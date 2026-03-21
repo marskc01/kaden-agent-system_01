@@ -98,6 +98,17 @@ Update `app/about/page.tsx` with your real:
    - **Output Directory:** `.next`
 7. Click **Deploy**.
 
+### Recommended Vercel project settings
+
+This repo is set up to run on **Vercel Hobby** with:
+
+- **Framework Preset:** Next.js
+- **Node.js Version:** 20.x
+- **Install Command:** `npm install`
+- **Build Command:** `npm run build`
+
+A `vercel.json` file is included so the project keeps those defaults when imported.
+
 ### Option 2: Deploy with the Vercel CLI
 
 ```bash
