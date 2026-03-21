@@ -15,6 +15,21 @@ body {
 }
 
 body {
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top, rgba(183, 194, 255, 0.14), transparent 30%),
+    linear-gradient(180deg, #090a0f 0%, #050609 100%);
+  color: #f2f4f3;
+}
+
+body {
+  margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -27,6 +42,8 @@ body {
 *::selection {
   background: rgba(255, 255, 255, 0.9);
   color: #050505;
+  background: rgba(183, 194, 255, 0.35);
+  color: #ffffff;
 }
 
 a {
@@ -37,5 +54,9 @@ a {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .surface {
+    @apply border border-white/10 bg-white/[0.045] backdrop-blur-md;
   }
 }
