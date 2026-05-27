@@ -129,3 +129,98 @@ vercel --prod
 - Add metadata images and social previews
 - Connect analytics if desired
 - Add a CMS later if you want self-managed project updates
+
+## Daily Morning Brief automation (6:00am Australia/Perth)
+
+This repo includes an automated daily briefing generator tailored for **Kaden Condie (Perth, WA)**.
+
+### Output format
+
+The generated file is:
+
+- `morning-brief/latest.md`
+- `morning-brief/brief-YYYYMMDD.md`
+
+And follows this structure:
+
+- `# Morning Brief — [Day, Date]`
+- Today at a Glance
+- Calendar
+- Priority Actions
+- To-Do List (Must/Should/Can move)
+- Important Emails
+- Career / Film / Business Opportunities
+- Work / Client Priorities
+- Logistics
+- Suggested Day Plan
+- `Main thing today: ...`
+
+### Schedule
+
+GitHub Actions workflow: `.github/workflows/morning-brief.yml`
+
+- Runs daily at **6:00am Australia/Perth** (cron set as `0 22 * * *` UTC).
+- Can also be run manually via **workflow_dispatch**.
+
+### Data sources
+
+The script reads JSON from either URLs or files (URLs typically set via GitHub Secrets):
+
+- `CALENDAR_JSON_URL` or `CALENDAR_JSON_FILE`
+- `TASKS_JSON_URL` or `TASKS_JSON_FILE`
+- `EMAILS_JSON_URL` or `EMAILS_JSON_FILE`
+- `SOURCES_JSON_URL` or `SOURCES_JSON_FILE`
+
+If a source is missing/unavailable, the brief states that clearly and does not invent data.
+
+### Expected JSON shape (minimum)
+
+```json
+{
+  "items": []
+}
+```
+
+Or a top-level array.
+
+Calendar item example:
+
+```json
+{
+  "title": "Client edit review",
+  "start": "2026-05-28T01:30:00Z",
+  "end": "2026-05-28T02:15:00Z",
+  "location": "Northbridge Studio",
+  "attendees": ["Client Name"],
+  "prepNotes": "Bring cut v3 and revision list"
+}
+```
+
+Task item example:
+
+```json
+{
+  "title": "Submit Screenwest funding draft",
+  "priority": "high",
+  "overdue": true,
+  "notes": "Due today"
+}
+```
+
+Email item example:
+
+```json
+{
+  "from": "Festival Team",
+  "subject": "Submission deadline reminder",
+  "snippet": "Final call closes Friday",
+  "unread": true,
+  "suggestedAction": "Confirm submission package today"
+}
+```
+
+### Manual run
+
+```bash
+npm run brief:daily
+```
