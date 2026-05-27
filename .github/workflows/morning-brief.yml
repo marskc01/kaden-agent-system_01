@@ -1,0 +1,31 @@
+name: Morning Brief Automation
+
+on:
+  schedule:
+    # 6:00am Australia/Perth (AWST, UTC+8) = 22:00 UTC previous day
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-brief:
+    runs-on: ubuntu-latest
+    env:
+      CALENDAR_JSON_URL: ${{ secrets.CALENDAR_JSON_URL }}
+      TASKS_JSON_URL: ${{ secrets.TASKS_JSON_URL }}
+      EMAILS_JSON_URL: ${{ secrets.EMAILS_JSON_URL }}
+      SOURCES_JSON_URL: ${{ secrets.SOURCES_JSON_URL }}
+      CALENDAR_JSON_FILE: ${{ secrets.CALENDAR_JSON_FILE }}
+      TASKS_JSON_FILE: ${{ secrets.TASKS_JSON_FILE }}
+      EMAILS_JSON_FILE: ${{ secrets.EMAILS_JSON_FILE }}
+      SOURCES_JSON_FILE: ${{ secrets.SOURCES_JSON_FILE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/morning-brief.mjs
+      - name: Upload morning brief artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-brief
+          path: morning-brief/latest.md
